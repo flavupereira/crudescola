@@ -9,6 +9,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import br.com.flavio.escola.projeto_escola.service.AlunoService;
 import br.com.flavio.escola.projeto_escola.service.AvaliacaoService;
 import br.com.flavio.escola.projeto_escola.service.ProfessorService;
+import br.com.flavio.escola.projeto_escola.service.RelatorioService;
 
 
 @SpringBootApplication
@@ -18,13 +19,16 @@ public class ProjetoEscolaApplication implements CommandLineRunner{
 	private final AlunoService alunoService;
 	private final ProfessorService professorService;
 	private final AvaliacaoService avaliacaoService;
+	private final RelatorioService relatorioService;
 	
 	public ProjetoEscolaApplication(AlunoService alunoService,
-	AvaliacaoService avaliacaoService,ProfessorService professorService) {
+	AvaliacaoService avaliacaoService,ProfessorService professorService,
+	RelatorioService relatorioService ) {
 		
 		this.alunoService = alunoService;
 		this.professorService = professorService;
 		this.avaliacaoService = avaliacaoService;
+		this.relatorioService = relatorioService;
 	}
 
 	public static void main(String[] args) {
@@ -42,10 +46,10 @@ public class ProjetoEscolaApplication implements CommandLineRunner{
 			System.out.println("1 - Aluno");
 			System.out.println("2 - Professor");
 			System.out.println("3 - Avaliação");
-	//		System.out.println("4 - Realtorios");
-	//		System.out.println("4 - Realtorios Dinamicos");
+	     	System.out.println("4 - Realtorios");
+	//		System.out.println("5 - Realtorios Dinamicos");
 			
-			Integer function = scanner.nextInt();
+	     	  Integer function = Integer.parseInt(scanner.nextLine());
 			
 			switch (function) {
 			case 1: 
@@ -57,7 +61,9 @@ public class ProjetoEscolaApplication implements CommandLineRunner{
 			case 3: 
 				avaliacaoService.inicial(scanner);
 				break;
-			
+			case 4: 
+				relatorioService.inicial(scanner);
+				break;
 			default:
 				System.out.println("Finalizado !!!");
 				system = false;

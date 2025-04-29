@@ -23,10 +23,16 @@ public class Avaliacao {
 	@JoinColumn(name = "disciplina")
 	private Disciplina disciplina;
 
+	
+
+
 	public Long getId() {
 		return id;
 	}
 
+	public void setId(Long id) {
+		this.id = id;
+	}
 
 	public Float getNota() {
 		return nota;

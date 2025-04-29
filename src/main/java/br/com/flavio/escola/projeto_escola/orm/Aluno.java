@@ -3,6 +3,7 @@ package br.com.flavio.escola.projeto_escola.orm;
 import java.time.LocalDate;
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -27,29 +28,35 @@ public class Aluno {
 	private String cpf;
 
 	@Column(columnDefinition = "DATE")
-	private LocalDate data_nascimento;
+	private LocalDate dataNascimento;
 
 	private String email;
 	
-	@ManyToMany
+	@ManyToMany(fetch = FetchType.EAGER , cascade = CascadeType.ALL)
 	@JoinTable(name = "aluno_curso",
 	joinColumns = {@JoinColumn(name = "aluno_id" , referencedColumnName = "id")},
 	                inverseJoinColumns = {@JoinColumn(name = "curso_id" , referencedColumnName = "id")})
 	private List<Curso> curso;
 	
-	@ManyToMany(fetch = FetchType.EAGER)
+	@ManyToMany(fetch = FetchType.EAGER , cascade = CascadeType.ALL)
 	@JoinTable( name = "aluno_disciplina",
 	joinColumns = {@JoinColumn(name = "aluno_id", referencedColumnName = "id")},
 	               inverseJoinColumns = {@JoinColumn (name = "disciplina_id" ,referencedColumnName = "id")})
 	private List<Disciplina> disciplina;
 	
-	@OneToMany(mappedBy = "aluno")
+	
+	@OneToMany(mappedBy = "aluno", fetch = FetchType.EAGER)
 	List<Avaliacao> avaliacao;
+
+	
 
 	public Long getId() {
 		return id;
 	}
 
+	public void setId(Long id) {
+		this.id = id;
+	}
 
 	public String getNome() {
 		return nome;
@@ -68,11 +75,11 @@ public class Aluno {
 	}
 
 	public LocalDate getData_nascimento() {
-		return data_nascimento;
+		return dataNascimento;
 	}
 
 	public void setData_nascimento(LocalDate data_nascimento) {
-		this.data_nascimento = data_nascimento;
+		this.dataNascimento = data_nascimento;
 	}
 
 	public String getEmail() {
@@ -110,7 +117,15 @@ public class Aluno {
 	public void setAvaliacao(List<Avaliacao> avaliacao) {
 		this.avaliacao = avaliacao;
 	}
-	
+
+	@Override
+	public String toString() {
+		return "id= " + id +
+	            ", nome='" + nome + '\'' +
+	            ", cpf='" + cpf + '\'' +
+	            ", data_nascimento=" + dataNascimento +
+	            ", email='" + email + '\'' ;
+	}
 	
 	
 
