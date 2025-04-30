@@ -8,6 +8,7 @@ import java.util.Scanner;
 import org.springframework.stereotype.Service;
 
 import br.com.flavio.escola.projeto_escola.orm.Aluno;
+import br.com.flavio.escola.projeto_escola.orm.AlunoProjecao;
 import br.com.flavio.escola.projeto_escola.orm.Professor;
 import br.com.flavio.escola.projeto_escola.repository.AlunoRepository;
 import br.com.flavio.escola.projeto_escola.repository.ProfessorRepository;
@@ -37,6 +38,7 @@ public class RelatorioService {
 			System.out.println("4 - Buscar AlunoS provados com media maior 7 ");
 			System.out.println("5 - Buscar professor por Materia");
 			System.out.println("6 - Buscar professor data Contratação");
+			System.out.println("7 - Pesquisa Aluno Email");
 
 			int action = scanner.nextInt();
 
@@ -60,6 +62,9 @@ public class RelatorioService {
 				break;
 			case 6:
 				BusacaProfessorDataContratacao(scanner);
+				break;
+			case 7:
+				pesquisaFuncionarioEmail();
 				break;
 			default:
 				system = false;
@@ -133,6 +138,13 @@ public class RelatorioService {
 		List<Aluno> lista = alunoRepository.findByNome(nome);
 		lista.forEach(e -> System.out.println(e));
 
+	}
+	
+	
+	private void pesquisaFuncionarioEmail() {
+		List<AlunoProjecao> list = alunoRepository.findAlunoEmail();
+		list.forEach(a -> System.out.println("Aluno id: " + a.getId() +
+				"| nome :" + a.getNome() + " | Email : " + a.getEmail()));
 	}
 
 }

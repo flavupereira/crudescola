@@ -1,5 +1,6 @@
 package br.com.flavio.escola.projeto_escola.service;
 
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -7,6 +8,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import br.com.flavio.escola.projeto_escola.orm.Aluno;
@@ -197,7 +202,16 @@ public class AlunoService {
 	}
 
 	private void visualizar(Scanner scanner) {
-		Iterable<Aluno> alunos = alunoRepository.findAll();
+		System.out.println("Qual pagina você deseja visualizar");
+		Integer page = scanner.nextInt();
+		
+		Pageable pageable =PageRequest.of(page, 5 , Sort.by(Sort.Direction.DESC,"nome"));
+		
+        Page<Aluno> alunos = alunoRepository.findAll(pageable);
+        
+        System.out.println(alunos);
+        System.out.println("Pagina atual " + alunos.getNumber());
+        System.out.println("Total de elementos " + alunos.getTotalElements());
 		alunos.forEach(aluno -> System.out.println(aluno));
 	}
 	
