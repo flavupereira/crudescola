@@ -134,5 +134,149 @@ public interface AlunoProjecao {
     Long getId();
     String getNome();
     String getEmail();
-} ```
+}
+```
+
+**Uso em consultas:**
+
+// 🎯 Consulta que retorna apenas dados necessários
+List<AlunoProjecao> projecoes = alunoRepository.findAlunoEmail();
+
+**// Acesso aos dados projetados**
+
+```
+projecoes.forEach(projecao -> {
+    System.out.println("ID: " + projecao.getId());
+    System.out.println("Nome: " + projecao.getNome());
+    System.out.println("Email: " + projecao.getEmail());
+}); 
+```
+
+## Benefícios das Projeções:
+
+⚡ **Performance melhorada** - Menos dados transferidos
+
+🎯 **Consulta específica** - Apenas campos necessários
+
+🔒 **Imutabilidade** - Dados somente leitura
+
+## 6. Consultas Dinâmicas
+
+**Implementação com JpaSpecificationExecutor:**
+
+```
+java
+// 🎛️ Suporte a specifications dinâmicas
+public interface AlunoRepository extends JpaSpecificationExecutor<Aluno> {
+    // Permite construir queries dinâmicas
+}
+```
+**Exemplo de Specification dinâmica:**
+
+```
+java
+public class AlunoSpecifications {
+    
+    public static Specification<Aluno> comNome(String nome) {
+        return (root, query, criteriaBuilder) -> 
+            nome == null ? null : criteriaBuilder.like(root.get("nome"), "%" + nome + "%");
+    }
+    
+    public static Specification<Aluno> comDataNascimentoAfter(LocalDate data) {
+        return (root, query, criteriaBuilder) -> 
+            data == null ? null : criteriaBuilder.greaterThan(root.get("dataNascimento"), data);
+    }
+}
+
+// Uso combinado de specifications
+Specification<Aluno> spec = Specification
+    .where(AlunoSpecifications.comNome("João"))
+    .and(AlunoSpecifications.comDataNascimentoAfter(LocalDate.of(2000, 1, 1)));
+
+List<Aluno> alunos = alunoRepository.findAll(spec);
+
+```
+## 🚀 Como Executar
+
+## Pré-requisitos
+
+- Java 17+
+
+- Maven 3.6+
+
+- Banco de dados configurado (H2, MySQL, PostgreSQL)
+
+## Configuração
+
+1. Clone o repositório
+
+2. Configure o banco de dados no application.properties:
+
+```
+spring.datasource.url=jdbc:mysql://localhost:3306/escola
+spring.datasource.username=usuario
+spring.datasource.password=senha
+spring.jpa.hibernate.ddl-auto=update
+```
+
+## 📚 Entidades e Relacionamentos
+
+Diagrama de Relacionamentos
+
+Aluno (N) ─────── (N) Curso
+  │                     │
+  │                     │
+  │ (N) ─────────── (1) │
+Avaliacao           Disciplina
+  │                     │
+  │                     │
+  │ (N) ─────────── (1) │
+Disciplina         Professor
+
+## Principais Anotações JPA Utilizadas
+
+## 💡 Funcionalidades Principais
+
+### 💻 Menu Interativo
+
+| Opção | Funcionalidade | Descrição |
+|-------|----------------|-----------|
+| **1** | **Aluno** 👨‍🎓 | Gestão de estudantes |
+| **2** | **Professor** 👨‍🏫 | Gestão de docentes |
+| **3** | **Avaliação** 📊 | Notas e frequência |
+| **4** | **Relatórios** 📋 | Relatórios estáticos |
+| **5** | **Relatórios Dinâmicos** 🎚️ | Consultas dinâmicas |
+| **0** | **Sair** 🚪 | Finalizar sistema |
+
+
+## Principais Anotações JPA Utilizadas
+
+### Principais Anotações JPA Utilizadas
+
+| Anotação | Uso | Exemplo |
+|----------|-----|---------|
+| `@Entity` | Define entidade JPA | `@Entity public class Aluno` |
+| `@Id` + `@GeneratedValue` | Chave primária | `@Id @GeneratedValue(strategy = IDENTITY)` |
+| `@ManyToOne` | Relacionamento N-1 | `@ManyToOne private Disciplina disciplina` |
+| `@OneToMany` | Relacionamento 1-N | `@OneToMany(mappedBy = "aluno")` |
+| `@ManyToMany` | Relacionamento N-N | `@ManyToMany @JoinTable` |
+| `@Enumerated` | Enumeração | `@Enumerated(EnumType.STRING)` |
+
+
+## Destaques Técnicos
+
+✅ Derived Queries - Consultas automáticas a partir dos nomes dos métodos
+
+✅ JPQL - Consultas type-safe com linguagem orientada a objetos
+
+✅ Native Queries - SQL nativo para casos específicos
+
+✅ Paginação - Controle eficiente de grandes volumes de dados
+
+✅ Projeções - Otimização de performance com interfaces
+
+✅ Specifications - Consultas dinâmicas type-safe
+
+✅ Relacionamentos - Mapeamento completo de entidades
+
 
