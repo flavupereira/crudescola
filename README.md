@@ -73,3 +73,58 @@ List<Aluno> findNomeCPF(@Param("nome") String nome, @Param("cpf") String cpf);
 """)
 List<Aluno> findAlunosAprovados();
 ```
+
+### Características:
+
+✅ **Type-safe** - Verificação em tempo de compilação
+
+✅ **Parâmetros nomeados** - Maior segurança e legibilidade
+
+✅ **JOIN explícito** - Controle total sobre os relacionamentos
+
+## 3. Native Queries
+
+**Consultas SQL nativas para casos específicos:**
+
+## Vantagens:
+
+🚀 **Performance** - SQL otimizado para o banco específico
+
+🔧 **Flexibilidade** - Sintaxe SQL completa
+
+📊 **Projeções eficientes** - Seleção apenas de colunas necessárias
+
+## 4. Paginação e Ordenação
+
+**Implementação no AlunoRepository:**
+
+```
+java
+// 📄 Herda de PagingAndSortingRepository para paginação automática
+public interface AlunoRepository extends 
+    PagingAndSortingRepository<Aluno, Long>,
+    CrudRepository<Aluno, Long>,
+    JpaSpecificationExecutor<Aluno> {
+    
+    // Métodos automaticamente pagináveis
+}
+```
+**Exemplo de uso com paginação**
+
+```
+java
+// Paginação: página 0, 10 registros por página, ordenado por nome
+Pageable pageable = PageRequest.of(0, 10, Sort.by("nome"));
+Page<Aluno> paginaAlunos = alunoRepository.findAll(pageable);
+
+// Acessando dados paginados
+List<Aluno> alunos = paginaAlunos.getContent();
+int totalPaginas = paginaAlunos.getTotalPages();
+long totalElementos = paginaAlunos.getTotalElements();
+```
+
+## 5. Trabalhando com Projeções
+
+**Interface-based Projection (AlunoProjecao.java):**
+
+
