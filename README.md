@@ -114,11 +114,13 @@ public interface AlunoRepository extends
 ```
 java
 // Paginação: página 0, 10 registros por página, ordenado por nome
+
 Pageable pageable = PageRequest.of(0, 10, Sort.by("nome"));
 Page<Aluno> paginaAlunos = alunoRepository.findAll(pageable);
 
 // Acessando dados paginados
 List<Aluno> alunos = paginaAlunos.getContent();
+
 int totalPaginas = paginaAlunos.getTotalPages();
 long totalElementos = paginaAlunos.getTotalElements();
 ```
@@ -127,4 +129,10 @@ long totalElementos = paginaAlunos.getTotalElements();
 
 **Interface-based Projection (AlunoProjecao.java):**
 
+```
+public interface AlunoProjecao {
+    Long getId();
+    String getNome();
+    String getEmail();
+} ```
 
