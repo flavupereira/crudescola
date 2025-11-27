@@ -29,3 +29,31 @@
 ## 📊 Visão Geral
 
 Este projeto é uma aplicação completa de gestão escolar desenvolvida para demonstrar as principais funcionalidades do **Spring Data JPA**, incluindo diferentes tipos de consultas, paginação, projeções e consultas dinâmicas.
+
+## 🔍 Spring Data JPA em Ação
+
+### 1. Derived Queries
+
+**Consulta derivada de métodos no `AlunoRepository`:**
+
+```java
+// 📍 Busca exata por nome
+List<Aluno> findByNome(String nome);
+
+// 🔍 Busca por fragmento de nome (LIKE)
+List<Aluno> findByNomeContaining(String nome);
+
+// 📅 Busca por data posterior
+List<Aluno> findByDataNascimentoAfter(LocalDate data);
+```
+**Exemplo de uso:**
+```
+// Busca alunos com "Silva" no nome
+List<Aluno> alunos = alunoRepository.findByNomeContaining("Silva");
+
+// Busca alunos nascidos após 2000
+List<Aluno> alunos = alunoRepository.findByDataNascimentoAfter(
+    LocalDate.of(2000, 1, 1)
+);
+```
+
