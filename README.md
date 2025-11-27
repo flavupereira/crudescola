@@ -98,9 +98,9 @@ List<Aluno> findAlunosAprovados();
 
 **Implementação no AlunoRepository:**
 
-```
-java
+
 // 📄 Herda de PagingAndSortingRepository para paginação automática
+```
 public interface AlunoRepository extends 
     PagingAndSortingRepository<Aluno, Long>,
     CrudRepository<Aluno, Long>,
@@ -164,9 +164,10 @@ projecoes.forEach(projecao -> {
 
 **Implementação com JpaSpecificationExecutor:**
 
+**// 🎛️ Suporte a specifications dinâmicas**
+
 ```
 java
-// 🎛️ Suporte a specifications dinâmicas
 public interface AlunoRepository extends JpaSpecificationExecutor<Aluno> {
     // Permite construir queries dinâmicas
 }
@@ -219,18 +220,22 @@ spring.datasource.password=senha
 spring.jpa.hibernate.ddl-auto=update
 ```
 
-## 📚 Entidades e Relacionamentos
+### Diagrama de Relacionamentos
 
-📊 Tabela de Cardinalidades
-Entidade 1	Cardinalidade	Entidade 2	Tipo Relacionamento
-👨‍🎓 Aluno	N:N	🎓 Curso	Muitos-para-Muitos
-👨‍🎓 Aluno	N:N	📚 Disciplina	Muitos-para-Muitos
-👨‍🎓 Aluno	1:N	📊 Avaliação	Um-para-Muitos
-🎓 Curso	1:N	📚 Disciplina	Um-para-Muitos
-👨‍🏫 Professor	1:N	📚 Disciplina	Um-para-Muitos
-📚 Disciplina	1:N	📊 Avaliação	Um-para-Muitos
+```ascii
+Aluno (N) ←──────→ (N) Curso
+  ↑                     ↑
+  │                     │
+ (N)                   (1)
+  │                     │
+Avaliacao           Disciplina
+  ↑                     ↑
+  │                     │
+ (N)                   (1)
+  │                     │
+Disciplina ←──────→ Professor
 
-
+```
 
 ## 💡 Funcionalidades Principais
 
