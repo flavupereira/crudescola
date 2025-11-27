@@ -56,4 +56,20 @@ List<Aluno> alunos = alunoRepository.findByDataNascimentoAfter(
     LocalDate.of(2000, 1, 1)
 );
 ```
+## 2. Consultas JPQL
 
+Consultas personalizadas com JPQL no AlunoRepository:
+```java
+// 👥 Busca por nome e CPF com parâmetros nomeados
+@Query("SELECT a FROM Aluno a WHERE a.nome = :nome AND a.cpf = :cpf")
+List<Aluno> findNomeCPF(@Param("nome") String nome, @Param("cpf") String cpf);
+
+// 🎓 Busca de alunos aprovados com JOIN
+@Query("""
+    SELECT DISTINCT a 
+    FROM Aluno a 
+    JOIN Avaliacao av ON a = av.aluno 
+    WHERE av.nota >= 7 AND av.frequencia >= 20
+""")
+List<Aluno> findAlunosAprovados();
+```
